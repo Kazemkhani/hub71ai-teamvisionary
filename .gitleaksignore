@@ -1,0 +1,4 @@
+# False positives: Bankable questionnaire field names, not credentials.
+# q3_uaeSignatory and q12_cashIntensive trip the generic-api-key heuristic.
+src/data/banks.ts:generic-api-key:17
+src/data/banks.ts:generic-api-key:35
