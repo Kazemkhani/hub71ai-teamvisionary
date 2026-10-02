@@ -8,6 +8,8 @@ export const STRUCTURE_BASE_DAYS = { simple: 21, international: 35, complex: 56 
 export const GREEN_DOC_DAYS = 3;
 export const MIN_BANK_DAYS = 14;
 export const BANK_RETRY_DAYS = 28;
+// Team estimate, matching the bank step's existing 28-day median and 42-day p80.
+export const BANK_P80_BUFFER_DAYS = 14;
 
 export const BANKABLE_QUESTIONS: BankableQuestion[] = [
   { key: 'q1_layers', label: 'Ownership layers between the company and its UBOs', options: [
