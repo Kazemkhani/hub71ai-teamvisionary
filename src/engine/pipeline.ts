@@ -1,17 +1,20 @@
-// OWNED BY PACK A. Base STUB: returns the fixture with the caller's inputs spliced in, so the UI renders before the engine exists.
-// Pack A replaces the body with: jurisdiction -> bankable -> obligations -> family -> toggles -> events -> schedule. Signature must not change.
 import type { Plan, ScheduledPlan } from '../model/plan';
-import { formatDay } from '../model/plan';
-import { FIXTURE_SCHEDULED_A } from '../fixtures/scheduled-preset-a';
+import { BEST_ANSWERS } from '../model/plan';
+import { jurisdiction } from '../modules/jurisdiction';
+import { bankable } from '../modules/bankable';
+import { obligations } from '../modules/obligations';
+import { family } from '../modules/family';
+import { toggles } from '../modules/toggles';
+import { events } from '../modules/events';
+import { schedule } from './schedule';
+
+export function runModules(plan: Plan): Plan {
+  return events(toggles(family(obligations(bankable(jurisdiction(plan))))));
+}
 
 export function pipeline(plan: Plan): ScheduledPlan {
-  return {
-    ...FIXTURE_SCHEDULED_A,
-    company: plan.company,
-    people: plan.people,
-    bankable: plan.bankable,
-    toggles: plan.toggles,
-    events: plan.events ?? [],
-    goLiveDate: formatDay(plan.company.startDate, FIXTURE_SCHEDULED_A.goLiveDay),
-  };
+  const scheduled = schedule(runModules(plan));
+  const ideal = schedule(runModules({ ...plan, bankable: BEST_ANSWERS,
+    toggles: { kycEarly: true, chequeFree: true, flexiDesk: true }, events: [] }));
+  return { ...scheduled, idealGoLiveDay: ideal.goLiveDay };
 }
